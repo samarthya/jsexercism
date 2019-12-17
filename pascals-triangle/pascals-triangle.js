@@ -9,7 +9,10 @@ export class Triangle {
    */
   constructor(rows) {
     this._triangleRows = rows;
-    this.generateTriangle();
+
+    if(!this._triangle) {
+      this.generateTriangle();
+    }
   }
 
   /**
@@ -30,11 +33,7 @@ export class Triangle {
    * @param {int} e 
    */
   factorial(e) {
-    if (e > 1) {
-      return e * this.factorial(e - 1);
-    } else {
-      return 1;
-    }
+    return (e>1)? (e * this.factorial(e-1)): 1;
   }
 
   /**
@@ -52,16 +51,17 @@ export class Triangle {
       console.log(" Fac(" + n + ") : " + 1);
       ar.push(1);
       return ar;
+    } else {
+      ar.push(1);
+      while (r < n) {
+        val = (this.factorial(n) / (this.factorial(r) * this.factorial(n - r)));
+        console.log(" Fac(" + n + ") : " + val);
+        ar.push(val);
+        r++;
+      }
+      ar.push(1);
     }
 
-    ar.push(1);
-    while (r < n) {
-      val = (this.factorial(n) / (this.factorial(r) * this.factorial(n - r)));
-      console.log(" Fac(" + n + ") : " + val);
-      ar.push(val);
-      r++;
-    }
-    ar.push(1);
     console.log(" for: " + n + " returning " + ar);
     return ar;
   }
