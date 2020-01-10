@@ -1,7 +1,7 @@
 
 class ArgumentError extends Error {
-  constructor() {
-    throw new Error("Remove this statement and implement this function");
+  constructor(...message) {
+    super();
   }
 }
 
@@ -20,49 +20,72 @@ const OPERATIONS = ADDITION | SUBTRACTION | DIVIDE | MULTIPLICATION;
 class Wordy {
 
   constructor(question) {
-    this.numbers = question.match(Numeric).map((ele, i, arr) => parseInt(ele));
+    this.numbers = []
     this.question = question || null;
   }
 
   parse() {
     let sum = 0;
+    let index = 1;
+
+    try {
+      this.numbers = this.question.match(Numeric).map((ele, i, arr) => parseInt(ele));
+    }catch(err) {
+      throw new ArgumentError()
+    }
+
     if (this.question != null) {
       const elements = this.question.split(" ");
       for (const element of elements) {
-        // Iterate through each element and match for operation or numeral.
-        console.log(element);
-
+        // Iterate through each element and match for operation or numeral
         if (element.match(ADDITION) != null) {
-          if (this.numbers.length == 1) {
-            return this.numbers[0];
+          if (index+1 <= this.numbers.length) {
+            sum += (this.numbers[index] + this.numbers[index-1]);
           } else {
-            sum = this.numbers.reduce((s, num) => s + num);
+            sum += this.numbers[index-1]
           }
-        }
+          index += 2;
+        } else if (element.match(SUBTRACTION) != null) {
 
-        if (element.match(SUBTRACTION) != null) {
-          if (this.numbers.length == 1) {
-            return this.numbers[0];
+          if (index+1 <= this.numbers.length) {
+            sum = (this.numbers[index-1] - this.numbers[index]);
           } else {
-            sum = this.numbers.reduce((s, num) => s - num);
+            if(index == 1) {
+              sum = this.numbers[index-1]
+            } else {
+              // console.log("index" + index);
+              sum -= this.numbers[index - 1]
+            }
           }
-        }
-
-        if (element.match(MULTIPLICATION) != null) {
-          if (this.numbers.length == 1) {
-            return this.numbers[0];
+          index += 2;
+        } else if (element.match(MULTIPLICATION) != null) {
+          if (index+1 <= this.numbers.length) {
+            sum = (this.numbers[index-1] * this.numbers[index])
           } else {
-            sum = this.numbers.reduce((s, num) => s * num);
+            if(index == 1) {
+              sum = this.numbers[index-1]
+            } else {
+              sum *= this.numbers[index-1]
+            }
           }
-        }
-        if (element.match(DIVIDE) != null) {
-          if (this.numbers.length == 1) {
-            return this.numbers[0];
+          index += 2;
+        } else if (element.match(DIVIDE) != null) {
+          if (index+1 <= this.numbers.length) {
+            sum = (this.numbers[index-1] /  this.numbers[index])
           } else {
-            sum = this.numbers.reduce((s, num) => s / num);
+            if(index == 1) {
+              sum = this.numbers[index-1]
+            } else {
+              sum /= this.numbers[index-1]
+            }
           }
+          index += 2;
         }
       }
+    }
+
+    if(index == 1) {
+      throw new ArgumentError(); 
     }
     return sum;
   }
