@@ -1,125 +1,60 @@
-export const ALPHABETS = Array.from('abcdefghijklmnopqrstuvqxyz');
+const alphabets = 'abcdefghijklmnopqrstuvwxyz';
+const lengthAlphabets = alphabets.length;
+const shiftCount = x => alphabets.indexOf(x);
+const normalize = (x, length) => (x + length) % length;
 
-export function getRandomArbitrary(min, max) {
-  var val = Math.round(Math.random() * (max - min) + min);
-  return val;
+/**
+ * Generate random key.
+ */
+const generateKey = () => {
+  return Array(...Array(100))
+    .map(() => alphabets[Math.floor(Math.random() * lengthAlphabets)])
+    .join('')
+}
+
+const shiftRight = (string, key) => {
+  // Walk through the input string and the key.
+  return string
+    .split('')
+    .map((char, i) => {
+      const keyIndex = normalize(i, key.length)
+      const index = normalize(
+        shiftCount(char) + shiftCount(key[keyIndex]),
+        lengthAlphabets
+      )
+      return alphabets[index]
+    })
+    .join('')
+}
+
+const shiftLeft = (string, key) => {
+  return string
+    .split('')
+    .map((char, i) => {
+      const keyIndex = normalize(i, key.length)
+      const index = normalize(
+        shiftCount(char) - shiftCount(key[keyIndex]),
+        lengthAlphabets
+      )
+      return alphabets[index]
+    })
+    .join('')
 }
 
 export class Cipher {
-
   constructor(key) {
-    this._key = key || this.generateRandomKey();
-    this._key = this._key.toLowerCase();
+    this._key = key || generateKey()
   }
 
-  /**
-   * Generates a random key if none is presented.
-   */
-  generateRandomKey() {
-    do {
-      this._key += ALPHABETS[getRandomArbitrary(0, 25)];
-    } while (this._key.length < 100);
+  encode(plainText) {
+    return shiftRight(plainText, this._key)
   }
 
-  zCharCode() {
-    return 'z'.charCodeAt(0);
-  }
-
-  aCharCode() {
-    return 'a'.charCodeAt(0);
-  }
-
-  getDiffLength(inputChar) {
-    return inputChar - this.aCharCode();
-  }
-  
-  /**
-   * Encodes the character based on the key.
-   * @param {*} charAt 
-   * @param {*} diffLength 
-   */
-  encodeChar(charAt, diffLength) {
-    let encodedChar = charAt + diffLength;
-
-    while(encodedChar > this.zCharCode()) {
-      encodedChar %= this.zCharCode();
-      encodedChar += (this.aCharCode() - 1);
-    }
-
-    return String.fromCharCode(encodedChar)
-  }
-
-  /**
-   * Decodes the character based on the key.
-   * @param {*} charAt 
-   * @param {*} diffLength 
-   */
-  decodeChar(charAt, diffLength, flag) {
-    let decodedChar = charAt - diffLength;
-
-    while(decodedChar < this.aCharCode()) {
-      decodedChar = ((this.zCharCode() + 1) - diffLength)
-      if (flag) {
-        decodedChar += (charAt - this.aCharCode());
-      }
-    }
-
-    return String.fromCharCode(decodedChar)
-  }
-  
-  /**
-   * Encodes the input.
-   * @param {*} input 
-   */
-  encode(input) {
-    input = input.toLowerCase();
-
-    let encodedString = '';
-    let diffLength = 0;
-
-
-    if (input == null) {
-      return null;
-    }
-
-    // Encoded String length increases from 0 to the full length of the input.
-    do {
-      let keyElement = encodedString.length;
-
-      if(keyElement >= this._key.length ) {
-        keyElement %= this._key.length;
-      }
-      diffLength = this.getDiffLength(this._key.charAt(keyElement).charCodeAt(0));
-      encodedString += this.encodeChar(input.charAt(encodedString.length).charCodeAt(0), diffLength);
-    } while( encodedString.length < input.length);
-
-    return encodedString;
-  }
-
-  decode(input) {
-    if (input == null) {
-      return null;
-    }
-
-    let decodedString = '';
-    let diffLength = 0;
-
-    do {
-      let keyElement = decodedString.length;
-      
-      if(keyElement >= this._key.length ) {
-        keyElement %= this._key.length;
-      }
-      let keyChar = this._key.charAt(keyElement).charCodeAt(0);
-      let encodedChar = input.charAt(decodedString.length).charCodeAt(0);
-      let flag = keyChar > encodedChar? true: false;
-      diffLength = this.getDiffLength(keyChar);
-      decodedString += this.decodeChar(encodedChar, diffLength, flag);
-    } while( decodedString.length < input.length);
-    return decodedString;
+  decode(encodedText) {
+    return shiftLeft(encodedText, this._key)
   }
 
   get key() {
-    return this._key;
+    return this._key
   }
 }

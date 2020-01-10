@@ -5,7 +5,7 @@ Implement a simple shift cipher like Caesar and a more secure substitution ciphe
 ## Step 1
 
 "If he had anything confidential to say, he wrote it in cipher, that is,
-by so changing the order of the letters of the alphabet, that not a word
+by so changing the order of the alphabets of the alphabet, that not a word
 could be made out. If anyone wishes to decipher these, and get at their
 meaning, he must substitute the fourth letter of the alphabet, namely D,
 for A, and so with the others."
@@ -19,7 +19,7 @@ generally our little sisters are not cryptanalysts.
 The Caesar Cipher was used for some messages from Julius Caesar that
 were sent afield. Now Caesar knew that the cipher wasn't very good, but
 he had one ally in that respect: almost nobody could read well. So even
-being a couple letters off was sufficient so that people couldn't
+being a couple alphabets off was sufficient so that people couldn't
 recognize the few words that they did know.
 
 Your task is to create a simple shift cipher like the Caesar Cipher.
@@ -58,7 +58,7 @@ would get the same thing as the Caesar Cipher.
 
 The weakest link in any cipher is the human being. Let's make your
 substitution cipher a little more fault tolerant by providing a source
-of randomness and ensuring that the key contains only lowercase letters.
+of randomness and ensuring that the key contains only lowercase alphabets.
 
 If someone doesn't submit a key at all, generate a truly random key of
 at least 100 alphanumeric characters in length.

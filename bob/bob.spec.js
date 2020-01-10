@@ -76,7 +76,7 @@ describe('Bob', () => {
     expect(result).toEqual('Whatever.');
   });
 
-  test('non-letters with question', () => {
+  test('non-alphabets with question', () => {
     const result = hey(':) ?');
     expect(result).toEqual('Sure.');
   });

@@ -22,7 +22,7 @@ describe('Random key cipher', () => {
     expect(cipher.decode(cipher.encode(plaintext))).toEqual(plaintext);
   });
 
-  test('key is made only of lowercase letters', () => {
+  test('key is made only of lowercase alphabets', () => {
     expect(cipher.key).toMatch(/^[a-z]+$/);
   });
 });
