@@ -1,12 +1,13 @@
 
 class ArgumentError extends Error {
   constructor(...message) {
-    super();
+    super(message);
   }
 }
 
 const Numeric = /-?\d+\b/g; // Matches any digital numeric.
-// const VALIDPLUS = /\d\splus\s\d/; // Any numeric followed by a space and a numeric again
+
+
 const ADDITION = /\bplus\b/ig;
 const SUBTRACTION = /\bminus\b/ig;
 const DIVIDE = /\bdivided\b/ig;
@@ -19,6 +20,10 @@ const OPERATIONS = ADDITION | SUBTRACTION | DIVIDE | MULTIPLICATION;
  */
 class Wordy {
 
+  /**
+   * The question that needs to be answered.
+   * @param {*} question 
+   */
   constructor(question) {
     this.numbers = []
     this.question = question || null;

@@ -12,7 +12,7 @@
             "args": [
                 "--runInBand"
             ],
-            "cwd": "${workspaceFolder}/wordy",
+            "cwd": "${workspaceFolder}/secret-handshake",
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen",
             "disableOptimisticBPs": true
