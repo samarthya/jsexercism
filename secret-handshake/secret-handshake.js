@@ -3,21 +3,34 @@
 // convenience to get you started writing code faster.
 //
 
-/**
- * Converts to binary
- * @param {*} number 
- */
-function binary(number) {
-  var rep = new Array();
+function binaryOptimized(number) {
+  var binaryRep = [];
   do {
-    let remainder = parseInt(number%2);
-    console.log(" Remainder: " + remainder);
-    number = parseInt(number/2);
-    rep.push(remainder)
-  } while (number > 0)
+    binaryRep.push(parseInt(number%2));
+    number /= 2;
+  } while (parseInt(number) > 0)
+  return binaryRep;
+}
 
-  console.log(rep.reverse());
-  return rep.reverse();
+
+function getCommand(pseudo, arr) {
+  switch(pseudo) {
+    case 1:
+      arr.push ("wink");
+      break;
+    case 10:
+      arr.push ("double blink");
+      break;
+    case 100:
+      arr.push ("close your eyes");
+      break;
+    case 1000:
+      arr.push ("jump");
+      break;
+    case 10000:
+      arr = arr.reverse();
+  }
+  return arr;
 }
 
 /**
@@ -32,27 +45,13 @@ function binary(number) {
  * @param {*} input 
  */
 export const commands = (input) => {
-    var rep = binary(input);
-    var handShake = [];
+    //var rep = binary(input);
+    var rep = binaryOptimized(input);
+    var commands = [];
 
-    var placeValue = 1;
+    rep.map((element, i) => {
+      getCommand(element * Math.pow(10, i), commands)
+    });
 
-    for (let m of rep) {
-      m *= placeValue;
-
-      if (m == 1) {
-        handShake.push("wink");
-      } else if (m == 10){
-        handShake.push("double blink");
-      } else if (m == 100){
-        handShake.push("close your eyes");
-      } else if (m == 1000){
-        handShake.push("jump");
-      } else if (m == 10000) {
-        handShake = handShake.reverse();
-      }
-      placeValue *= 10;
-    }
-
-    return handShake;
+    return commands;
 };
