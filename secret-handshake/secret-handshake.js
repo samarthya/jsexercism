@@ -1,27 +1,17 @@
-export const commands = (code) => {
-  if (isNaN(parseInt(code))) {
-    throw new Error('Handshake must be a number');
-  }
-  let handshake = [];
-  if (code & 1) {
-    handshake.push ('wink');
+const HANDSHAKES = ["wink", "double blink", "close your eyes", "jump"];
+
+export const commands = (n) => {
+  if (typeof n !== "number") {
+    throw new Error("Handshake must be a number");
   }
 
-  if (code & 2) {
-    handshake.push ('double blink');
+  // console.log('TEST', n & (1 << index));
+  
+  const result = HANDSHAKES.filter((signal, index) => n & (1 << index));
+
+  if (n & (1 << HANDSHAKES.length)) {
+    result.reverse();
   }
 
-  if (code & 4) {
-    handshake.push ('close your eyes');
-  }
-
-  if (code & 8) {
-    handshake.push ('jump');
-  }
-
-  if (code & 16) {
-    handshake.reverse();
-  }
-
-  return handshake;
+  return result;
 };
